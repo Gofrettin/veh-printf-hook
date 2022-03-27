@@ -34,17 +34,16 @@ LONG WINAPI veh_handler(EXCEPTION_POINTERS *exception_info) {
 bool same_page() {
     // check if our function is in the same page as printf. if it is we cannot hook it.
     MEMORY_BASIC_INFORMATION mem_basic_info1;
-    if(!VirtualQuery((const uint8_t*)printf, &mem_basic_info1, sizeof(mem_basic_info1))) {
+    if(!VirtualQuery((const uintptr_t*)printf, &mem_basic_info1, sizeof(mem_basic_info1))) {
         return true;
     }
     MEMORY_BASIC_INFORMATION mem_basic_info2;
-    if(!VirtualQuery((const uint8_t*)print_woo, &mem_basic_info2, sizeof(mem_basic_info2))) {
+    if(!VirtualQuery((const uintptr_t*)print_woo, &mem_basic_info2, sizeof(mem_basic_info2))) {
         return true;
     }
     if(mem_basic_info1.BaseAddress == mem_basic_info2.BaseAddress) {
         return true;
     }
-
     return false;
 }
 
