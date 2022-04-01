@@ -8,7 +8,7 @@ void print_woo() {
 
 // veh handler function. this is the function that will allow us to "jump" to our print_woo function.
 
-LONG WINAPI veh_handler(EXCEPTION_POINTERS *exception_info) {
+LONG WINAPI veh(EXCEPTION_POINTERS *exception_info) {
     // check if we get a page violation.
     if(exception_info->ExceptionRecord->ExceptionCode == STATUS_GUARD_PAGE_VIOLATION) {
         // check if we're at the right address for the function we want to hook
@@ -53,7 +53,7 @@ bool hook_func() {
         return false;
     }
     // add our exception handler.
-    veh_handle = AddVectoredExceptionHandler(1, (PVECTORED_EXCEPTION_HANDLER)veh_handler);
+    veh_handle = AddVectoredExceptionHandler(1, (PVECTORED_EXCEPTION_HANDLER)veh);
     // check if adding our exception handler went well, if it did then enable the page_guard flag in the page
     // printf is in.
     if(veh_handle && VirtualProtect((LPVOID)printf, 1, PAGE_EXECUTE_READ | PAGE_GUARD, &old)) {
