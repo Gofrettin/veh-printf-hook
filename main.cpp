@@ -6,7 +6,7 @@ void print_woo() {
     std::cout << "woo" << "\n";
 }
 
-// veh handler function. this is the function that will allow us to "jump" to our print_woo function.
+// veh function. this is the function that will allow us to "jump" to our print_woo function.
 
 LONG WINAPI veh(EXCEPTION_POINTERS *exception_info) {
     // check if we get a page violation.
