@@ -38,9 +38,11 @@ int main() {
     DWORD prot_buff;
 
     // check that the virtual queries we make go properly.
-    if(!VirtualQuery(reinterpret_cast<const uintptr_t*>(printf), &printf_info, sizeof(printf_info))) { printf("Failed to query basic information with VirtualQuery.\nGLE(get last error) code: %i", GetLastError()); return 0; }
-    if(!VirtualQuery(reinterpret_cast<const uintptr_t*>(print_woo), &printwoo_info, sizeof(printwoo_info))) { printf("%s", "Failed to query basic information with VirtualQuery.\nGLE(get last error) code: %i", GetLastError()); return 0;}
-    
+    if(!VirtualQuery(reinterpret_cast<const uintptr_t*>(print_woo), &printwoo_info, sizeof(printwoo_info) || VirtualQuery(reinterpret_cast<const uintptr_t*>(printf), &printf_info, sizeof(printf_info)))
+     { 
+       printf("%s", "Failed to query basic information with VirtualQuery.\nGLE(get last error) code: %i", GetLastError()); 
+       return 0;
+     }
     // check if our function is in the same page as printf. if it is we cannot hook it.
     if(printf_info.BaseAddress == printwoo_info.BaseAddress) {
         printf("%s", "Cannot hook printf. Same mem page as printwoo.");
